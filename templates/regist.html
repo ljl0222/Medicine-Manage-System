@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"> 
+        <title>注册</title>
+        <link rel="stylesheet" href="{{ url_for('static',filename='bootstrap-4.3.1/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/style_account.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static',filename='font-awesome/css/font-awesome.min.css') }}">
+    </head>
+    <body>
+
+        {% for message in get_flashed_messages(with_categories=True) %}
+        <div class="alert alert-{{ message[0] }}">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>{{ message[1] }}</strong>
+        </div>
+	    {% endfor %}
+
+        <div id="clouds">
+            <div class="cloud x1"></div>
+            <!-- Time for multiple clouds to dance around -->
+            <div class="cloud x2"></div>
+            <div class="cloud x3"></div>
+            <div class="cloud x4"></div>
+            <div class="cloud x5"></div>
+            
+        </div>
+
+    
+        <div class="container">
+            <div id="login" style="margin:0 auto;">
+                <form method="post" action='/regist'>
+                    <fieldset class="clearfix"> 
+                        <p><span class="fa fa-user"></span><input type="text" value="" name="username" autocomplete="off"
+                            placeholder="Username"></p>  
+                        <p><span class="fa fa-lock"></span><input type="password" value="" name="password" autocomplete="off"
+                            placeholder="Password"></p>
+                        <p><span class="fa fa-lock"></span><input type="password" value="" name="password_re" autocomplete="off"
+                            placeholder="Repeat Password"></p>
+                        <p><span class="fa fa-envelope"></span><input type="text" value="" name="email" autocomplete="off"
+                            placeholder="Email"></p>
+                        
+                        <p><input type="submit" value="Regist"></p>
+                    </fieldset>   
+                </form>
+                <p>已有帐户？<a href="" class="blue">立即登录</a><span class="fa fa-arrow-right"></span></p><br>
+                <p><a href="{{ url_for('account_app.home') }}" class="blue">回到主页</a><span class="fa fa-arrow-right"></span></p>
+    
+            </div>
+        </div>
+
+
+        <script src="{{ url_for('static',filename='js/jquery-2.2.3.min.js') }}"></script>
+        <script src="{{ url_for('static',filename='bootstrap-4.3.1/js/bootstrap.min.js') }}"></script>
+
+        
+    <body>
+
+</html>

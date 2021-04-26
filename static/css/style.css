@@ -1,0 +1,24 @@
+/*----------------------------------------------------
+    12. ALERTS
+------------------------------------------------------*/
+.alert {
+    border-radius: 0;
+    padding: 13px 18px 12px;
+    margin-bottom: 8px;
+}
+.alert-success {
+    border-color: #A7FABD;
+    background: #E9FEEE;
+}
+.alert-info {
+    border-color: #A7E5FA;
+    background: #E9F8FF;
+}
+.alert-warning {
+    border-color: #FAE6A7;
+    background: #FFF9E9;
+}
+.alert-danger {
+    border-color: #FAA7BB;
+    background: #FEE9EE;
+}
