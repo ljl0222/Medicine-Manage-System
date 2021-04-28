@@ -8,11 +8,22 @@ from . import account
 # 登录检验（用户名、密码验证）
 def valid_login(username, password):
     user = User.query.filter(
-        and_(User.username == username, User.password == password)).first()
+        and_(User.username == username, User.password == password)
+    ).first()
     if user:
         return True
     else:
         return False
+
+# 注册检验（用户名、邮箱验证）
+def valid_regist(username, email):
+    user = User.query.filter(
+        or_(User.username == username, User.email == email)
+    ).first()
+    if user:
+        return False
+    else:
+        return True
 
 @account.route('/')
 def home():
@@ -34,6 +45,8 @@ def regist():
     if request.method == 'POST':
         if request.form['password'] != request.form['password_re']:
             flash('两次密码不相同！', 'danger')
+        elif ~valid_regist(request.form['username'], request.form['email']):
+            flash('该用户名或者邮箱已经被注册！', 'danger')
         else:
             user = User(
                 username = request.form['username'],
