@@ -47,19 +47,17 @@
             <ul>
                 {% for pre in List %}
                 <li>
-                    <p>药方名称：{{pre.name}}，主要药材为：{{pre.compositionList}}</a>
+                    <a href="{{ url_for('prescription_app.showPrescription', preId=pre.id) }}"><strong>药方名称：{{pre.name}}</strong>&nbsp;&nbsp;&nbsp;&nbsp;主要药材为：{{pre.compositionList}}</a>
                 </li>
                 {% endfor %}
             </ul>
-
-
         </div>
 
 
         <div class="full-search-wrap">
             <div class="full-search container">
                 <div class="close-s float-right js-close-search flaticon-cancel-button fi-2x"></div>
-                <form action="/searchMedicine" class=" search-full-form" method=post>
+                <form action="/searchPrescription" class=" search-full-form" method=post>
                     <div class="position-relative">
                         <i class="search-icon flaticon-magnifying-glass-browser fi-2x"></i>
                         <input type="text" id="s-full" class="search-full-form__input" placeholder="Search" name="keyword" maxlength="80">

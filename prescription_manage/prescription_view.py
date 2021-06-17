@@ -84,3 +84,58 @@ def listPrescription():
         i.compositionList = medString
 
     return render_template('listPrescription.html', username=username, List=List)
+
+@prescription.route('/showPrescription')
+@prescription.route('/showPrescription/<preId>')
+def showPrescription(preId):
+    username = session.get('username')
+    if not username:
+        flash("请先登录！", "danger")
+        return redirect(url_for('account_app.home'))
+    pre = Prescription.query.filter(Prescription.id==preId).first()
+
+    idString = pre.compositionList.split('_')
+    medString = ""
+        
+    for _id in idString:
+        if not _id:
+            continue
+        med = Medicine.query.filter(Medicine.id==_id).first()
+        medString += med.name
+        if _id != idString[len(idString) - 1]:
+            medString += ','
+    pre.compositionList = medString
+
+    return render_template('showPrescription.html', prescription=pre, username=username)
+
+@prescription.route('/searchPrescription', methods=['GET', 'POST'])
+def searchPrescription():
+    username = session.get('username')
+    if not username:
+        flash("请先登录！", "danger")
+        return redirect(url_for('account_app.home'))
+
+    keyword = request.form.get('keyword')
+    keywordList = keyword.split()
+
+    preSearch = set()
+    for key in keywordList:
+        preList = Prescription.query.filter(Prescription.name.like("%"+key+"%")).all()
+        for pre in preList:
+            preSearch.add(pre)
+    
+    List = list(preSearch)
+    for i in List:
+        idString = i.compositionList.split('_')
+        medString = ""
+        
+        for _id in idString:
+            if not _id:
+                continue
+            med = Medicine.query.filter(Medicine.id==_id).first()
+            medString += med.name
+            if _id != idString[len(idString) - 1]:
+                medString += ','
+        i.compositionList = medString
+
+    return render_template('listPrescription.html', username=username, List=List)

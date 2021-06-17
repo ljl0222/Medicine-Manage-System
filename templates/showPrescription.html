@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8"> 
-        <title>药材详情</title>
+        <title>药方详情</title>
         <link rel="stylesheet" href="{{ url_for('static',filename='bootstrap-4.3.1/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ url_for('static',filename='font-awesome/css/font-awesome.min.css') }}">
 
@@ -16,7 +16,7 @@
             <strong>{{ message[1] }}</strong>
         </div>
 	    {% endfor %}
- 
+
         <!-- 导航栏 -->
         <nav class="navbar navbar-expand-sm bg-light navbar-light">
             <ul class="navbar-nav">
@@ -38,43 +38,35 @@
             </ul>
         </nav>
 
-        <div class="container" style="margin-top: 5%;">
-            <div class="row">
-                <div class="col-lg-5">
-                    <div class="product-thumb">  
-                        <div class="product-gallery">
-                            <div class="procDisplay">
-                                <img src="{{ url_for('static', filename=medicine.img) }}" alt="" >
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-
-                <div class="product-summary summary col-lg-7">
-                    <br>
-                    <h4 class="mb-30">药材名称：{{ medicine.name }}</h4>
-                    
-                    <div class="price">
-                        <h4 class="mb-30">原拉丁名：{{ medicine.latinName }}</h4>    
-                    </div>
-
-                    <div class="product-attributes">
-                        <div class="product-attributes__item">
-                            <h4 class="mb-30">地域分布：{{ medicine.distribution }}</h4>
-                        </div>
-                        <div class="product-attributes__item">
-                            <h4 class="mb-30">性味归经：{{ medicine.nature }}</h4>
-                        </div>
-                    </div>
-                    <div class="description-block">
-                        <h4 class="mb-30">功效描述：</h4>
-                        <div class="product-description text-content">
-                            <p>{{ medicine.function }}</p>
-                        </div>
-                    </div>
+        <div class="container pt-30" style="max-width: 100%;">
+            <div class="row height align-items-center justify-content-center" style="background-color:cornflowerblue;height: 180px;">
+                <div class="col-lg-10" style="padding-top: 50px;">
+                    <div class="generic-banner-content">
+                        <h2 class="text-white text-center">{{ prescription.name }}</h2>
+                        <!-- <p class="text-white">It won’t be a bigger problem to find one video game lover in your <br> neighbor. Since the introduction of Virtual Game.</p> -->
+                    </div>							
                 </div>
             </div>
+        </div>
+
+        <div class="container" style="margin-top: 10px;">
+            <ul>
+                <li>
+                    <p>药方名称：{{ prescription.name }}</p>
+                </li>
+                <li>
+                    <p>主治疾病：{{ prescription.indications }}</p>
+                </li>
+                <li>
+                    <p>功效：{{ prescription.effect }}</p>
+                </li>
+                <li>
+                    <p>用法用量：{{ prescription.dosage }}</p>
+                </li>
+                <li>
+                    <p>药材组成：{{ prescription.compositionList }}</p>
+                </li>
+            </ul>
         </div>
 
 
