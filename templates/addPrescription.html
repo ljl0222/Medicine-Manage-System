@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"> 
+        <title>添加药方</title>
+        <link rel="stylesheet" href="{{ url_for('static',filename='bootstrap-4.3.1/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static',filename='font-awesome/css/font-awesome.min.css') }}">
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/myStyle.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='flaticon/flaticon.css') }}">
+    </head>
+    <body>
+        {% for message in get_flashed_messages(with_categories=True) %}
+        <div class="alert alert-{{ message[0] }}">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>{{ message[1] }}</strong>
+        </div>
+	    {% endfor %}
+        <!-- 导航栏 -->
+        <nav class="navbar navbar-expand-sm bg-light navbar-light">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('account_app.home') }}">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('account_app.panel') }}">个人中心</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('account_app.logout') }}">注销</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">关于</a>
+                </li>
+            </ul>
+        </nav>
+
+
+        <form method="post" action="/addPrescription" enctype='multipart/form-data'>
+            <label style="margin-left: 5%;">
+                药方名称：<input type="text" name="name" /> 
+            </label>
+            <label style="margin-left: 5px;">
+                主治疾病：<input type="text" name="indications" /> 
+            </label>
+            <label style="margin-left: 5px;">
+                功效主治：<input type="text" name="effect" /> 
+            </label>
+            <label style="margin-left: 5px;">
+                用法用量：<input type="text" name="dosage" /> 
+            </label>
+            <input type="submit" value="确认添加" class="btn btn-primary" style="margin-left: 5%;"/>
+
+            <div class="form-search-toggle js-open-search" style="margin-left: 2%; margin-top: 2%;">
+                <i class="search-icon flaticon-magnifying-glass-browser fi-2x"></i>
+                <span>搜索对应的药材</span>
+            </div>
+
+            <div class="container" style="margin-top: 10px;">
+                <ul class="products featured-products columns-4">
+                    {% for med in List %}
+                    
+                    <li class="product">   
+                        <input type="checkbox" value={{med.id}} name="medicineList" /> <br />
+                        <div class="product-thumb">
+                            <a href="{{url_for('medicine_app.showMedicine',medId=med.id)}}"
+                                class="product-thumb__link">
+                                <div class="procDisplay">
+                                    <img src="{{ url_for('static', filename=med.img) }}" alt="">
+                                </div>
+                                <span class="btn btn-outline-light shop-link">Detail</span>
+                            </a>
+                        </div>
+                        <div class="product-title"><a
+                                href="{{url_for('medicine_app.showMedicine',medId=med.id)}}">药材名称：{{med.name}}</a>
+                        </div>
+                    </li>
+                    {% endfor %} 
+                </ul>
+    
+    
+            </div>
+
+            
+        </form>
+
+        <div class="full-search-wrap">
+            <div class="full-search container">
+                <div class="close-s float-right js-close-search flaticon-cancel-button fi-2x"></div>
+                <form action="/search" class=" search-full-form" method=post>
+                    <div class="position-relative">
+                        <i class="search-icon flaticon-magnifying-glass-browser fi-2x"></i>
+                        <input type="text" id="s-full" class="search-full-form__input" placeholder="Search" name="keyword" maxlength="80">
+                        <input type="submit" class="d-none">
+                    </div>
+                    <p class="hint">Type in your search and press enter</p>
+                </form>
+            </div>
+        </div>
+
+        <script src="{{ url_for('static',filename='js/jquery-2.2.3.min.js') }}"></script>
+        <script src="{{ url_for('static',filename='bootstrap-4.3.1/js/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static',filename='select2/js/select2.min.js') }}"></script>
+        <script src="{{ url_for('static',filename='slick/slick.min.js') }}"></script>
+
+        <!-- 用来做搜索 -->
+        <script src="{{ url_for('static',filename='js/custom.js') }}"></script>
+
+    </body>
+</html>

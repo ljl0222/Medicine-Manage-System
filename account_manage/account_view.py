@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, flash, redirect, url_for, ses
 from flask_sqlalchemy import SQLAlchemy
 from db_manage.db import db
 from account_manage.account_model import User
+from medicine_manage.medicine_model import Medicine
+from prescription_manage.prescription_model import Prescription
 from sqlalchemy import and_, or_
 from . import account
 
@@ -27,8 +29,8 @@ def valid_regist(username, email):
 
 @account.route('/')
 def home():
-    return render_template('home.html',
-                            username=session.get('username'))
+    allMedicine = Medicine.query.filter().all()
+    return render_template('home.html', username=session.get('username'), allMedicine=allMedicine)
 
 
 ## 测试使用，这里后面改了
@@ -45,7 +47,7 @@ def regist():
     if request.method == 'POST':
         if request.form['password'] != request.form['password_re']:
             flash('两次密码不相同！', 'danger')
-        elif ~valid_regist(request.form['username'], request.form['email']):
+        elif not valid_regist(request.form['username'], request.form['email']):
             flash('该用户名或者邮箱已经被注册！', 'danger')
         else:
             user = User(
@@ -100,5 +102,13 @@ def changePassword():
     
     return render_template('changePassword.html', 
                             username=session.get('username'))
+
+## 5. 个人中心
+@account.route('/panel')
+def panel():
+    username = session.get('username')
+    user = User.query.filter(User.username == username).first()
+    db.session.commit()
+    return render_template('panel.html', user=user)
 
 

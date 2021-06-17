@@ -43,7 +43,7 @@
                         <p><input type="submit" value="Regist"></p>
                     </fieldset>   
                 </form>
-                <p>已有帐户？<a href="" class="blue">立即登录</a><span class="fa fa-arrow-right"></span></p><br>
+                <p>已有帐户？<a href="{{ url_for('account_app.login') }}" class="blue">立即登录</a><span class="fa fa-arrow-right"></span></p><br>
                 <p><a href="{{ url_for('account_app.home') }}" class="blue">回到主页</a><span class="fa fa-arrow-right"></span></p>
     
             </div>

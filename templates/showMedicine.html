@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        {% for message in get_flashed_messages(with_categories=True) %}
+        <div class="alert alert-{{ message[0] }}">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>{{ message[1] }}</strong>
+        </div>
+	    {% endfor %}
+        <div>
+            <img src="{{ url_for('static', filename=medicine.img) }}">
+        </div>
+        <span>{{ medicine.latinName }}</span>
+        <span>{{ medicine.distribution }}</span>
+        <span>{{ medicine.nature }}</span>
+        <span>{{ medicine.function }}</span>
+    </body>
+</html>
