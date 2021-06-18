@@ -5,8 +5,18 @@
         <title>个人中心</title>
         <link rel="stylesheet" href="{{ url_for('static',filename='bootstrap-4.3.1/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ url_for('static',filename='font-awesome/css/font-awesome.min.css') }}">
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/myStyle.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='flaticon/flaticon.css') }}">
     </head>
     <body>
+        {% for message in get_flashed_messages(with_categories=True) %}
+        <div class="alert alert-{{ message[0] }}">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>{{ message[1] }}</strong>
+        </div>
+	    {% endfor %}
+
         <!-- 导航栏 -->
         <nav class="navbar navbar-expand-sm bg-light navbar-light">
             <ul class="navbar-nav">
@@ -14,7 +24,7 @@
                     <a class="nav-link" href="{{ url_for('account_app.home') }}">首页</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">个人中心</a>
+                    <a class="nav-link" href="{{ url_for('account_app.panel') }}">个人中心</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('account_app.logout') }}">注销</a>
@@ -25,12 +35,71 @@
             </ul>
         </nav>
         
-        <a href="{{ url_for('account_app.changePassword') }}">修改密码</a>
-        
-        
+        <section class="section-userinfo" style="margin-top: 5%;">
+            <div class="container">
+                <img src="{{ url_for('static',filename=user.img) }}" width='100' alt="初始">
+                
+                <h2 id="myh3" class="mb-30" style="margin-top: 30px;padding-left:10px">{{user.username}}</h2>
+                <h4 class="mb-30">
+                    邮箱：
+                    {{user.email}}
+                </h4>
+                <h4 class="mb-30">
+                    级别：
+                    {% if user.isAdmin == 2 %}
+                        超级管理员
+                    {% elif user.isAdmin == 1 %}
+                        普通管理员
+                    {% else %}
+                        普通用户
+                    {% endif %}
+                </h4>
+                {% if (not user.isIdentity) and (user.reason) %}
+                <h4 class="mb-30">
+                    审核不过理由：
+                        {{ user.reason }}
+                </h4>
+                {% endif %}
+            </div>
+        </section>
+
+
+        <nav class="nav-item">
+            <div class="container">
+                <a href="{{ url_for('account_app.chageHead') }}"
+                 class="btn btn-primary mr-1 mb-3">修改头像</a>
+                <a href="{{ url_for('account_app.changePassword') }}"
+                 class="btn btn-primary mr-1 mb-3">修改密码</a>
+                {% if user.isAdmin > 0 %}
+                <a href="{{ url_for('account_app.examine') }}" 
+                    class="btn btn-primary mr-1 mb-3">用户审核</a><br />
+                {% elif (user.isAdmin==0) and (not user.isIdentity) %}
+                <a href="{{ url_for('account_app.identity') }}" 
+                    class="btn btn-primary mr-1 mb-3">身份认证</a><br />
+                {% endif %}
+            </div>
+        </nav>
+
+        <footer class="page-footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <div class="copyright">Copyright &copy; 2021.1851977 李家麟 All rights reserved.<a
+                            target="_blank" href=""></a></div>
+                    <ul class="footer-bottom__menu">
+                        <li>Privacy Policy</li>
+                        <li>Terms of use</li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
 
         <script src="{{ url_for('static',filename='js/jquery-2.2.3.min.js') }}"></script>
         <script src="{{ url_for('static',filename='bootstrap-4.3.1/js/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static',filename='select2/js/select2.min.js') }}"></script>
+        <script src="{{ url_for('static',filename='slick/slick.min.js') }}"></script>
+
+        <!-- 用来做搜索 -->
+        <script src="{{ url_for('static',filename='js/custom.js') }}"></script>
 
     <body>
 

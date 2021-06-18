@@ -3,6 +3,7 @@
 ## 系统
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import and_, or_
 
 ## 自定义
 from db_manage.db import db
@@ -31,6 +32,21 @@ db.init_app(app)
 @app.before_first_request
 def create_db():
     db.create_all()
+    with open('superAdmin', 'r', encoding='utf-8') as f:
+        content = f.read().splitlines()
+    if not User.query.filter(and_(User.username == content[0], User.password == content[1])).first():
+        superAdmin = User(
+            username = content[0],
+            password = content[1],
+            email = 'lijialin@163.com',
+            isAdmin = 2,
+            isIdentity = False,
+            reason = "",
+            img = '../static/headImgs/default.jpg'
+        )
+        db.session.add(superAdmin)
+        db.session.commit()
+
 
 
 app.register_blueprint(account)

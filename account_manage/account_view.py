@@ -1,11 +1,15 @@
 from flask import Flask, render_template, request, flash, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
+from account_manage import account_model
 from db_manage.db import db
 from account_manage.account_model import User
 from medicine_manage.medicine_model import Medicine
 from prescription_manage.prescription_model import Prescription
 from sqlalchemy import and_, or_
 from . import account
+
+import os
+import uuid
 
 # 登录检验（用户名、密码验证）
 def valid_login(username, password):
@@ -54,7 +58,10 @@ def regist():
                 username = request.form['username'],
                 password = request.form['password'],
                 email = request.form['email'],
-                isAdmin = 0
+                isAdmin = 0,
+                isIdentity = False,
+                reason = "",
+                img = '../static/headImgs/default.jpg'
             )
             db.session.add(user)
             db.session.commit()
@@ -108,8 +115,92 @@ def changePassword():
 @account.route('/panel')
 def panel():
     username = session.get('username')
+    if not username:
+        flash("请先登录！", "danger")
+        return redirect(url_for('account_app.home'))
     user = User.query.filter(User.username == username).first()
     db.session.commit()
     return render_template('panel.html', user=user)
+
+@account.route('/identity', methods=['POST', 'GET'])
+def identity():
+    username = session.get('username')
+    if not username:
+        flash("请先登录！", "danger")
+        return redirect(url_for('account_app.home'))
+    
+    user = User.query.filter(User.username == username).first()
+    user.isIdentity = True
+    db.session.commit()
+    flash("请等待审核！", "success")
+    return redirect(url_for('account_app.panel'))
+
+@account.route('/admin/examine', methods=['POST', 'GET'])
+@account.route('/admin/examine/<userName>', methods=['POST', 'GET'])
+def examine(userName=""):
+    curUsername = session.get('username')
+    curUser = User.query.filter(User.username == curUsername).first()
+
+    if (curUser.isAdmin == 0):
+        flash("请使用管理员用户登录！", "danger")
+        return redirect(url_for('account_app.login'))
+
+    if request.method == 'POST':
+        user = User.query.filter(User.username == userName).first()
+        if user:
+            if request.form.get('isPass') == 'no':
+                flash("已拒绝通过！", "success")
+            elif request.form.get('isPass') == 'yes':
+                user.isAdmin = 1
+                flash("已通过！", "success")
+            user.isIdentity = False
+            user.reason = request.form.get('reason')
+            db.session.commit()
+        return redirect(url_for('account_app.examine'))
+
+    allUsers = User.query.all()
+    userList = []
+    for u in allUsers:
+        if u.isIdentity:
+            userList.append(u)
+
+    return render_template('examine.html', List=userList)
+
+@account.route('/chageHead', methods=['POST', 'GET'])
+def chageHead():
+    username = session.get('username')
+    if not username:
+        flash("请先登录！", "danger")
+        return redirect(url_for('account_app.home'))
+    
+    if request.method == 'POST':
+        user = User.query.filter(User.username==username).first()
+        headImg = request.files['headImg']
+        if not headImg:
+            flash("未上传文件！", "danger")
+            return redirect(url_for('account_app.chageHead'))
+        else:
+            basepath = os.path.dirname(__file__)
+            ext = os.path.splitext(headImg.filename)[1]
+            newFileName = str(uuid.uuid1()) + ext
+
+            uploadPath = os.path.join(basepath, '../static/headImgs', newFileName)
+            headImg.save(uploadPath)
+
+            if user.img and user.img != '../static/headImgs/default.jpg':
+                delPath = os.path.join(basepath, '../static', user.img)
+                if os.path.exists(delPath):
+                    os.remove(delPath)
+
+            user.img = 'headImgs/' + newFileName
+            db.session.commit()
+            flash("修改成功！", "success")
+            return redirect(url_for('account_app.panel'))
+    
+    return render_template('chageHead.html')
+
+        
+
+
 
 

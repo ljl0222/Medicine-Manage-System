@@ -68,6 +68,8 @@ def listPrescription():
         flash("请先登录！", "danger")
         return redirect(url_for('account_app.home'))
 
+    user = User.query.filter(User.username==username).first()
+
     List = Prescription.query.filter().all()
 
     for i in List:
@@ -83,7 +85,7 @@ def listPrescription():
                 medString += ','
         i.compositionList = medString
 
-    return render_template('listPrescription.html', username=username, List=List)
+    return render_template('listPrescription.html', username=username, List=List, user=user)
 
 @prescription.route('/showPrescription')
 @prescription.route('/showPrescription/<preId>')

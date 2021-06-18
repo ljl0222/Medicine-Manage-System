@@ -7,7 +7,7 @@ class Medicine(db.Model):
 
     name = db.Column(db.String(50), nullable=False)
     latinName = db.Column(db.String(50), nullable=False)
-    distribution = db.Column(db.String(50), nullable=False)
-    nature = db.Column(db.String(50), nullable=False)
-    function = db.Column(db.String(50), nullable=False)
+    distribution = db.Column(db.String(128), nullable=False)
+    nature = db.Column(db.String(128), nullable=False)
+    function = db.Column(db.String(1024), nullable=False)
     img = db.Column(db.String(256), nullable=False)

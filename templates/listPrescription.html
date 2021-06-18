@@ -29,12 +29,14 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('medicine_app.listMedicine') }}">药材</a>
                 </li>
+                {% if user.isAdmin > 0 %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('prescription_app.addPrescription') }}">添加药方</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('prescription_app.delPrescription') }}">删除药方</a>
                 </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('account_app.logout') }}">注销</a>
                 </li>
@@ -73,6 +75,19 @@
                 </form>
             </div>
         </div>
+
+        <footer class="page-footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <div class="copyright">Copyright &copy; 2021.1851977 李家麟 All rights reserved.<a
+                            target="_blank" href=""></a></div>
+                    <ul class="footer-bottom__menu">
+                        <li>Privacy Policy</li>
+                        <li>Terms of use</li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
 
         <script src="{{ url_for('static',filename='js/jquery-2.2.3.min.js') }}"></script>
         <script src="{{ url_for('static',filename='bootstrap-4.3.1/js/bootstrap.min.js') }}"></script>

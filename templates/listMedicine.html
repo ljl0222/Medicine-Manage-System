@@ -26,9 +26,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('account_app.panel') }}">个人中心</a>
                 </li>
+                {% if user.isAdmin > 0 %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('medicine_app.addMedicine') }}">添加药材</a>
                 </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('prescription_app.listPrescription') }}">药方</a>
                 </li>
@@ -57,10 +59,12 @@
                                 <div class="procDisplay">
                                     <img src="{{ url_for('static', filename=med.img) }}" alt="">
                                 </div>
-                                <a type="submit" href="{{ url_for('medicine_app.showMedicine',medId=med.id) }}" class="btn btn-outline-light shop-link" style="transform: translate(-50%, -75%)">详情</span>
+                                <a type="submit" href="{{ url_for('medicine_app.showMedicine',medId=med.id) }}" class="btn btn-outline-light shop-link" {% if user.isAdmin > 0 %}style="transform: translate(-50%, -75%)"{% endif %}>详情</span>
+                                {% if user.isAdmin > 0 %}
                                 <a type="submit" onclick="return confirm('确认删除？');"
                                             href="{{ url_for('medicine_app.delMedicine',medDelId=med.id) }}" class="btn btn-outline-light shop-link"
                                             style="transform: translate(-50%, 75%)">删除</a>
+                                {% endif %}
                             </a>
                         </div>
                         <div class="product-title"><a
@@ -87,6 +91,19 @@
                 </form>
             </div>
         </div>
+
+        <footer class="page-footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <div class="copyright">Copyright &copy; 2021.1851977 李家麟 All rights reserved.<a
+                            target="_blank" href=""></a></div>
+                    <ul class="footer-bottom__menu">
+                        <li>Privacy Policy</li>
+                        <li>Terms of use</li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
 
         <script src="{{ url_for('static',filename='js/jquery-2.2.3.min.js') }}"></script>
         <script src="{{ url_for('static',filename='bootstrap-4.3.1/js/bootstrap.min.js') }}"></script>

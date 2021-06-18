@@ -59,9 +59,10 @@ def listMedicine():
     if not username:
         flash("请先登录！", "danger")
         return redirect(url_for('account_app.home'))
+    user = User.query.filter(User.username==username).first()
 
     List = Medicine.query.filter().all()
-    return render_template('listMedicine.html', username=username, List=List)
+    return render_template('listMedicine.html', username=username, List=List, user=user)
 
 @medicine.route('/searchMedicine', methods=['GET', 'POST'])
 def searchMedicine():

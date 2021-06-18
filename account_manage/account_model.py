@@ -9,3 +9,6 @@ class User(db.Model):
     password = db.Column(db.String(80))
     email = db.Column(db.String(120), unique=True)
     isAdmin = db.Column(db.Integer)
+    isIdentity = db.Column(db.Boolean)
+    reason = db.Column(db.String(512))
+    img = db.Column(db.String(256), nullable=False)
