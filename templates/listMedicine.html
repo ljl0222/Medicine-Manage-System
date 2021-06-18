@@ -30,6 +30,9 @@
                     <a class="nav-link" href="{{ url_for('medicine_app.addMedicine') }}">添加药材</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('prescription_app.listPrescription') }}">药方</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('account_app.logout') }}">注销</a>
                 </li>
                 <li class="nav-item">
@@ -54,7 +57,10 @@
                                 <div class="procDisplay">
                                     <img src="{{ url_for('static', filename=med.img) }}" alt="">
                                 </div>
-                                <span class="btn btn-outline-light shop-link">Detail</span>
+                                <a type="submit" href="{{ url_for('medicine_app.showMedicine',medId=med.id) }}" class="btn btn-outline-light shop-link" style="transform: translate(-50%, -75%)">详情</span>
+                                <a type="submit" onclick="return confirm('确认删除？');"
+                                            href="{{ url_for('medicine_app.delMedicine',medDelId=med.id) }}" class="btn btn-outline-light shop-link"
+                                            style="transform: translate(-50%, 75%)">删除</a>
                             </a>
                         </div>
                         <div class="product-title"><a

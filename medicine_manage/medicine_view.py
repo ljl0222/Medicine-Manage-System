@@ -48,6 +48,9 @@ def addMedicine():
 def showMedicine(medId):
     med = Medicine.query.filter_by(id=medId).first()
     username = session.get('username')
+    if not username:
+        flash("请先登录！", "danger")
+        return redirect(url_for('account_app.home'))
     return render_template('showMedicine.html', medicine=med, username=username)
 
 @medicine.route('/listMedicine')
@@ -79,3 +82,27 @@ def searchMedicine():
     List = list(medSearch)
 
     return render_template('listMedicine.html', username=username, List=List)
+
+@medicine.route('/delMedicine', methods=['GET', 'POST'])
+def delMedicine():
+    username = session.get('username')
+    if not username:
+        flash("请先登录！", "danger")
+        return redirect(url_for('account_app.home'))
+
+    medDelId = request.args.get('medDelId')
+    medDel = Medicine.query.filter(Medicine.id==medDelId).first()
+
+    base_path = os.path.dirname(os.path.dirname(__file__))
+    abs_path = os.path.join(base_path, 'static/medicineImgs',
+                            os.path.basename(
+                                medDel.img))
+    
+    db.session.delete(medDel)
+    db.session.commit()
+
+    if os.path.exists(abs_path):
+        os.remove(abs_path)
+    
+    return redirect(url_for('medicine_app.listMedicine'))
+

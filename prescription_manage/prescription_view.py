@@ -139,3 +139,52 @@ def searchPrescription():
         i.compositionList = medString
 
     return render_template('listPrescription.html', username=username, List=List)
+
+@prescription.route('/delPrescription', methods=['GET', 'POST'])
+def delPrescription():
+    username = session.get('username')
+    if not username:
+        flash("请先登录！", "danger")
+        return redirect(url_for('account_app.home'))
+
+    if request.method == 'POST':
+        delPreList = request.form.getlist('delPre')
+        for preId in delPreList:
+            pre = Prescription.query.filter(Prescription.id==preId).first()
+            db.session.delete(pre)
+            db.session.commit()
+        List = Prescription.query.filter().all()
+        
+        for i in List:
+            idString = i.compositionList.split('_')
+            medString = ""
+            
+            for _id in idString:
+                if not _id:
+                    continue
+                med = Medicine.query.filter(Medicine.id==_id).first()
+                medString += med.name
+                if _id != idString[len(idString) - 1]:
+                    medString += ','
+            i.compositionList = medString
+
+        return render_template('delPrescription.html', username=username, List=List)
+    else:
+        List = Prescription.query.filter().all()
+
+        for i in List:
+            idString = i.compositionList.split('_')
+            medString = ""
+            
+            for _id in idString:
+                if not _id:
+                    continue
+                med = Medicine.query.filter(Medicine.id==_id).first()
+                medString += med.name
+                if _id != idString[len(idString) - 1]:
+                    medString += ','
+            i.compositionList = medString
+
+        return render_template('delPrescription.html', username=username, List=List)
+
+    

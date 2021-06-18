@@ -53,7 +53,8 @@ def regist():
             user = User(
                 username = request.form['username'],
                 password = request.form['password'],
-                email = request.form['email']
+                email = request.form['email'],
+                isAdmin = 0
             )
             db.session.add(user)
             db.session.commit()
