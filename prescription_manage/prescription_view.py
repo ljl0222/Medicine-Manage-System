@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from db_manage.db import db
 from account_manage.account_model import User
 from medicine_manage.medicine_model import Medicine
-from prescription_manage.prescription_model import Prescription
+from prescription_manage.prescription_model import Prescription, Prescription_Medicine
 from sqlalchemy import and_, or_
 from . import prescription
 
@@ -36,6 +36,15 @@ def addPrescription():
         )
         db.session.add(prescription)
         db.session.commit()
+
+        for medId in medicineList:
+            p_m = Prescription_Medicine(
+                pid = prescription.id,
+                mid = medId
+            )
+            db.session.add(p_m)
+            db.session.commit()
+
         flash("药方添加成功！", "success")
         return redirect(url_for('account_app.home'))
     return render_template('addPrescription.html', username=username, List=List)

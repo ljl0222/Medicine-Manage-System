@@ -15,7 +15,7 @@ from prescription_manage.prescription_view import prescription
 # 见了个鬼了，这个地方之前的项目，import和create_all()甚至不是由同一个人写的代码，那当时是怎么create出来的
 from account_manage.account_model import User 
 from medicine_manage.medicine_model import Medicine
-from prescription_manage.prescription_model import Prescription
+from prescription_manage.prescription_model import Prescription, Prescription_Medicine
 
 import config
 

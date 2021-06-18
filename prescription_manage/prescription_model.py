@@ -1,4 +1,5 @@
 from db_manage.db import db
+from medicine_manage.medicine_model import Medicine
 
 class Prescription(db.Model):
     __tablename__ = 'Prescription'
@@ -11,3 +12,10 @@ class Prescription(db.Model):
     compositionList = db.Column(db.Text)
     effect = db.Column(db.String(1024), nullable=False)
     dosage = db.Column(db.String(1024), nullable=False)
+
+class Prescription_Medicine(db.Model):
+    __tablename__ = 'Prescription_Medicine'
+
+    id = db.Column(db.Integer, primary_key=True)
+    pid = db.Column(db.Integer, db.ForeignKey('Prescription.id'))
+    mid = db.Column(db.Integer, db.ForeignKey('Medicine.id'))
